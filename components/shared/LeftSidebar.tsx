@@ -1,6 +1,5 @@
 'use client'
 import { OrganizationSwitcher, SignOutButton, SignedIn } from '@clerk/nextjs'
-import React from 'react'
 import { sidebarLinks } from "@/constants"
 import Link from 'next/link'
 import Image from 'next/image'
