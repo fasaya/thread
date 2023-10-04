@@ -82,7 +82,6 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     const onSubmit = async (values: z.infer<typeof UserValidation>) => {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        console.log(values)
 
         const blob = values.profile_photo;
 
@@ -149,6 +148,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                     onChange={(e) => handleImage(e, field.onChange)}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -169,6 +169,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -189,6 +190,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -209,6 +211,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
