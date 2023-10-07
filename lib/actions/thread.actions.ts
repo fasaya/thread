@@ -68,3 +68,80 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
 
     return { posts, isNext }
 }
+
+
+export async function fetchPostById(id: string) {
+    connectToDB();
+
+    try {
+
+        // TODO: Populate Community
+
+        const thread = await Thread.findById(id)
+            .populate({
+                path: 'author',
+                model: User,
+                select: "_id id name image"
+            })
+            .populate({
+                path: 'children',
+                populate: [
+                    {
+                        path: 'author',
+                        model: User,
+                        select: "_id id name parentId image"
+                    },
+                    {
+                        path: 'children',
+                        model: Thread,
+                        populate: {
+                            path: 'author',
+                            'model': User,
+                            select: "_id id name parentId image"
+                        }
+                    }
+                ]
+            })
+            .exec()
+
+        return thread
+    } catch (error: any) {
+        throw new Error(`Error fetching thread ${error.message}`)
+
+    }
+}
+
+export async function addReplyToPost(
+    postId: string,
+    commentText: string,
+    userId: string,
+    path: string
+) {
+
+    connectToDB()
+
+    try {
+
+        //  Find original thread by Id
+        const originalPost = await Thread.findById(postId)
+        if (!originalPost) return null
+
+        const replyPost = new Thread({
+            text: commentText,
+            author: userId,
+            parentId: postId
+        })
+
+        const savedReplyPost = await replyPost.save()
+
+        originalPost.children.push(savedReplyPost._id)
+
+        await originalPost.save()
+
+        revalidatePath(path)
+
+    } catch (error: any) {
+        throw new Error(`Error reply to thread ${error.message}`)
+    }
+
+}
