@@ -27,9 +27,9 @@ export async function createThread({
         })
 
         // update user model
-        await User.findByIdAndUpdate(createdThread, {
-            $push: { threads: createdThread._id }
-        })
+        await User.findByIdAndUpdate(author, {
+            $push: { threads: createdThread._id },
+        });
 
         revalidatePath(path)
 
@@ -96,7 +96,7 @@ export async function fetchPostById(id: string) {
                         model: Thread,
                         populate: {
                             path: 'author',
-                            'model': User,
+                            model: User,
                             select: "_id id name parentId image"
                         }
                     }
