@@ -71,9 +71,8 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
 
 
 export async function fetchPostById(id: string) {
-    connectToDB();
-
     try {
+        connectToDB();
 
         // TODO: Populate Community
 
@@ -117,10 +116,8 @@ export async function addReplyToPost(
     userId: string,
     path: string
 ) {
-
-    connectToDB()
-
     try {
+        connectToDB()
 
         //  Find original thread by Id
         const originalPost = await Thread.findById(postId)
