@@ -19,7 +19,6 @@ import { usePathname, useRouter } from "next/navigation"
 import { ReplyValidation } from "@/lib/validations/thread";
 import Image from "next/image";
 import { addReplyToPost } from "@/lib/actions/thread.actions";
-// import { createThread } from "@/lib/actions/thread.actions";
 
 interface Props {
     postId: string;

@@ -15,14 +15,22 @@ import {
 import { Button } from "@/components/ui/button"
 import { Textarea } from "../ui/textarea";
 import { usePathname, useRouter } from "next/navigation"
+import { useOrganization } from "@clerk/nextjs"
 
 import { ThreadValidation } from "@/lib/validations/thread";
 import { createThread } from "@/lib/actions/thread.actions";
 
-function PostThread({ userId }: { userId: string }) {
+function PostThread({
+    userId,
+    name
+}: {
+    userId: string;
+    name: string;
+}) {
 
     const router = useRouter()
     const pathname = usePathname()
+    const { organization } = useOrganization()
 
     const form = useForm({
         resolver: zodResolver(ThreadValidation),
@@ -34,13 +42,10 @@ function PostThread({ userId }: { userId: string }) {
 
     // 2. Define a submit handler.
     const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-
         await createThread({
             text: values.thread,
             author: userId,
-            communityId: null,
+            communityId: !organization ? null : organization.id,
             path: pathname
         })
 
@@ -57,9 +62,12 @@ function PostThread({ userId }: { userId: string }) {
                     name="thread"
                     render={({ field }) => (
                         <FormItem className="flex flex-col gap-3 w-full">
-                            {/* <FormLabel className="text-base-semibold text-light-2">
-                                    Bio
-                                </FormLabel> */}
+                            <FormLabel className="text-base-semibold text-light-2">
+                                Post as&nbsp;
+                                <span className="text-base-semibold">
+                                    {organization ? `${organization.name} member` : name}
+                                </span>
+                            </FormLabel>
                             <FormControl className="no-focus border-dark-4 bg-dark-3 text-light-1">
                                 <Textarea
                                     rows={15}

@@ -6,18 +6,16 @@ import { redirect } from "next/navigation"
 async function CreateThreadPage() {
 
     const user = await currentUser()
-
     if (!user) return null
 
     const userInfo = await fetchUser(user.id)
-
     if (!userInfo?.onboarded) redirect('onboarding')
 
     return (
         <>
             <h1 className="head-text text-left">Create Thread</h1>
 
-            <PostThread userId={userInfo._id} />
+            <PostThread userId={userInfo._id} name={userInfo.name} />
         </>
     )
 }
