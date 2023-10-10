@@ -1,8 +1,29 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+First, register and create project on [clerk](https://clerk.com/) and [uploadthing](https://uploadthing.com/). Also create a mongo database.
 
-First, run the development server:
+
+Create .env.local for development
+```
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+NEXT_CLERK_WEBHOOK_SECRET=
+
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/onboarding
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+
+MONGODB_URL=
+
+UPLOADTHING_SECRET=
+UPLOADTHING_APP_ID=
+```
+
+
+
+Run the development server:
 
 ```bash
 npm run dev
