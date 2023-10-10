@@ -156,8 +156,6 @@ export async function getActivity(userId: string) {
 
         const userThreads = await Thread.find({ author: userId })
 
-        console.log('userThreads', userThreads);
-
         const childThreadIds = userThreads.reduce((acc, userThread) => {
             return acc.concat(userThread.children)
         }, [])

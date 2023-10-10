@@ -23,9 +23,6 @@ const ThreadsTab = async ({
         result = await fetchUserPosts(accountId)
     }
 
-    console.log('ThreadsTab.result', result);
-
-
     if (!result) return redirect('/')
 
     return (
