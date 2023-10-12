@@ -52,38 +52,43 @@ export async function createThread({
 }
 
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
-    connectToDB();
+    try {
+        connectToDB();
 
-    const skipAmount = (pageNumber - 1) * pageSize
+        const skipAmount = (pageNumber - 1) * pageSize
 
-    // fetch posts that have not parents (top level threads)
-    const postQuery = Thread
-        .find({ parentId: { $in: [null, undefined] } })
-        .sort({ createdAt: 'desc' })
-        .skip(skipAmount)
-        .limit(pageSize)
-        .populate({ path: 'author', model: User })
-        .populate({
-            path: 'children',
-            populate: {
-                path: 'author',
-                model: User,
-                select: "_id name parentId image"
-            }
-        })
-        .populate({
-            path: "community",
-            model: Community,
-            select: "_id id name image",
-        })
+        const postQuery = Thread
+            .find({ parentId: { $in: [null, undefined] } })
+            .sort({ createdAt: 'desc' })
+            .skip(skipAmount)
+            .limit(pageSize)
+            .populate({ path: 'author', model: User })
+            .populate({
+                path: 'children',
+                populate: {
+                    path: 'author',
+                    model: User,
+                    select: "_id name parentId image"
+                }
+            })
+            .populate({
+                path: "community",
+                model: Community,
+                select: "_id id name image",
+            })
 
-    const totalPostsCount = await Thread.countDocuments({ parentId: { $in: [null, undefined] } })
+        const posts = await postQuery.exec()
 
-    const posts = await postQuery.exec()
+        const totalPostsCount = await Thread.countDocuments({ parentId: { $in: [null, undefined] } })
 
-    const isNext = totalPostsCount > skipAmount + posts.length
+        const isNext = totalPostsCount > skipAmount + posts.length
 
-    return { posts, isNext }
+        return { posts, isNext }
+
+    } catch (error: any) {
+        throw new Error(`Error fetchPosts: ${error.message}`)
+
+    }
 }
 
 export async function fetchPostById(id: string) {
