@@ -8,9 +8,11 @@ function PostList({ userId }: { userId: string }) {
     const [posts, setPosts] = useState<any[]>([])
     const [pageNumber, setPageNumber] = useState(1)
     const [haveMore, setHaveMore] = useState(false)
+    const [isPostLoading, setIsPostLoading] = useState(true)
     const [isShowMoreLoading, setIsShowMoreLoading] = useState(false)
 
     const handleShowMore = async () => {
+        setIsPostLoading(true)
         setIsShowMoreLoading(true)
 
         const result = await fetchPosts(pageNumber, 2);
@@ -19,6 +21,7 @@ function PostList({ userId }: { userId: string }) {
             setHaveMore(result.isNext);
         }
 
+        setIsPostLoading(false)
         setIsShowMoreLoading(false)
     }
 
@@ -29,7 +32,22 @@ function PostList({ userId }: { userId: string }) {
     return (
         <>
             {posts.length === 0 ? (
-                <p className="no-result">No threads found</p>
+                <div className="mt-5">
+                    {isPostLoading
+                        ? <p className="no-result">Loading ...</p>
+                        : <p className="no-result">
+                            No threads found
+                            <br />
+                            <span
+                                className="cursor-pointer"
+                                onClick={() => {
+                                    handleShowMore(); console.log('ss');
+                                }}
+                            >
+                                Click here to refresh
+                            </span>
+                        </p>}
+                </div>
             ) : (
                 <>
                     <section className="mt-9 flex flex-col gap-3" >
