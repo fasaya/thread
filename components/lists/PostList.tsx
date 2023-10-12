@@ -49,7 +49,7 @@ function PostList({ userId }: { userId: string }) {
                     </section>
 
                     {isShowMoreLoading ? (
-                        <p className="mt-4 no-result cursor-default">Loading ...</p>
+                        <p className="mt-4 text-center !text-base-regular text-light-2">Loading ...</p>
                     ) : (
                         haveMore ? (
                             <p className="mt-4 text-center !text-base-regular text-light-2 cursor-pointer"
